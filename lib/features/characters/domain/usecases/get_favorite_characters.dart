@@ -1,14 +1,15 @@
 import 'package:flutter_rick/core/base/usecase.dart';
 import 'package:flutter_rick/features/characters/domain/character_repository.dart';
-import 'package:flutter_rick/features/characters/domain/models/character.dart';
+import 'package:flutter_rick/features/characters/domain/models/character_model.dart';
 
-class GetFavoriteCharacters implements UseCase<List<Character>, void> {
+class GetFavoriteCharactersUseCase
+    implements UseCase<List<CharacterModel>, void> {
   final CharacterRepository _characterRepository;
 
-  GetFavoriteCharacters(this._characterRepository);
+  GetFavoriteCharactersUseCase(this._characterRepository);
 
   @override
-  Future<List<Character>> call({void params}) {
+  Future<List<CharacterModel>> call({void params}) {
     return _characterRepository.getFavoriteCharacters();
   }
 }
