@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rick/config/routes/routes.dart';
+import 'package:flutter_rick/config/routes/app_router.dart';
 import 'package:flutter_rick/config/theme/app_theme.dart';
 import 'package:flutter_rick/core/injection_container.dart';
 import 'package:flutter_rick/features/characters/presentation/bloc/all/all_characters_bloc.dart';
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: rickAppTheme(),
-        onGenerateRoute: AppRoutes.onGenerateRoutes,
+        onGenerateRoute: AppRouter.onGenerateRoutes,
         home: const CharacterOverviewPage(),
       ),
     );

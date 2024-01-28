@@ -1,19 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rick/core/injection_container.dart';
 import 'package:flutter_rick/core/utils/string_extensions.dart';
 import 'package:flutter_rick/features/characters/domain/models/character_model.dart';
+import 'package:flutter_rick/features/characters/presentation/bloc/favorite/favorite_characters_bloc.dart';
+import 'package:flutter_rick/features/characters/presentation/bloc/favorite/favorite_characters_event.dart';
 
 class CharacterDetailsPage extends StatelessWidget {
   final CharacterModel character;
 
-  const CharacterDetailsPage({super.key, required this.character});
+  const CharacterDetailsPage({
+    super.key,
+    required this.character,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: _buildBody(context),
-      floatingActionButton: _buildFloatingActionButton(),
+    return BlocProvider(
+      create: (_) => sl<FavoriteCharactersBloc>(),
+      child: Scaffold(
+        appBar: _buildAppBar(),
+        body: _buildBody(context),
+        floatingActionButton: _buildFloatingActionButton(),
+      ),
     );
   }
 
@@ -102,17 +112,6 @@ class CharacterDetailsPage extends StatelessWidget {
     );
   }
 
-  void _onBackButtonTapped(BuildContext context) => Navigator.pop(context);
-
-  void _onFloatingActionButtonPressed(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.black,
-        content: Text('${character.name} added to favourites'.hardcoded),
-      ),
-    );
-  }
-
   Widget _buildCharacterRow(IconData icon, String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
@@ -125,6 +124,20 @@ class CharacterDetailsPage extends StatelessWidget {
             style: const TextStyle(fontSize: 16),
           ),
         ],
+      ),
+    );
+  }
+
+  void _onBackButtonTapped(BuildContext context) => Navigator.pop(context);
+
+  void _onFloatingActionButtonPressed(BuildContext context) {
+    BlocProvider.of<FavoriteCharactersBloc>(context)
+        .add(SaveFavorite(character));
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.black,
+        content: Text('${character.name} added to favorites'.hardcoded),
       ),
     );
   }
