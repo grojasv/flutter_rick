@@ -7,6 +7,4 @@ abstract class CharacterRepository {
   Future<List<CharacterModel>> getFavoriteCharacters();
 
   Future<void> saveFavoriteCharacter(CharacterModel character);
-
-  Future<void> removeFavoriteCharacter(CharacterModel character);
 }

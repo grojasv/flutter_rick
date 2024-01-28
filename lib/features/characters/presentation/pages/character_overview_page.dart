@@ -13,16 +13,25 @@ class CharacterOverviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar(context),
       body: _buildBody(),
     );
   }
 
-  PreferredSizeWidget _buildAppBar() {
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
       title: Text(
         'Rick & Morty'.hardcoded,
       ),
+      actions: [
+        GestureDetector(
+          onTap: () => _onFavoritesClicked(context),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 14),
+            child: Icon(Icons.bookmark),
+          ),
+        )
+      ],
     );
   }
 
@@ -36,7 +45,7 @@ class CharacterOverviewPage extends StatelessWidget {
           //TODO: Add retry mechanism
           return Center(
               child: Text(
-            'Sorry, an error has occurred\nTry agan later'.hardcoded,
+                'Sorry, an error has occurred\nTry again later'.hardcoded,
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 18),
           ));
@@ -68,6 +77,10 @@ class CharacterOverviewPage extends StatelessWidget {
   }
 
   void _onCharacterClicked(BuildContext context, CharacterModel character) {
-    Navigator.pushNamed(context, characterDetailsRoute, arguments: character);
+    Navigator.pushNamed(context, routeToCharacterDetails, arguments: character);
+  }
+
+  void _onFavoritesClicked(BuildContext context) {
+    Navigator.pushNamed(context, routeToFavorites);
   }
 }
