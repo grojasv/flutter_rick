@@ -3,3 +3,9 @@
 extension StringHardcoded on String {
   String get hardcoded => this;
 }
+
+/// String capitalization
+extension StringCapitalization on String {
+  String toCapitalized() =>
+      length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
+}

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rick/core/utils/constants.dart';
-import 'package:flutter_rick/core/utils/string_hardcoded.dart';
+import 'package:flutter_rick/core/utils/string_extensions.dart';
 import 'package:flutter_rick/features/characters/domain/models/character_model.dart';
 import 'package:flutter_rick/features/characters/presentation/bloc/all/all_characters_bloc.dart';
 import 'package:flutter_rick/features/characters/presentation/bloc/all/all_characters_state.dart';
@@ -18,7 +18,7 @@ class CharacterOverviewPage extends StatelessWidget {
     );
   }
 
-  _buildAppBar() {
+  PreferredSizeWidget _buildAppBar() {
     return AppBar(
       title: Text(
         'Rick & Morty'.hardcoded,
@@ -26,7 +26,7 @@ class CharacterOverviewPage extends StatelessWidget {
     );
   }
 
-  _buildBody() {
+  Widget _buildBody() {
     return BlocBuilder<AllCharactersBloc, AllCharactersState>(
       builder: (context, state) {
         if (state is AllCharactersLoading) {
@@ -36,14 +36,18 @@ class CharacterOverviewPage extends StatelessWidget {
           //TODO: Add retry mechanism
           return Center(
               child: Text(
-                  'Sorry, an error has occurred\nTry agan later'.hardcoded,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 18)));
+            'Sorry, an error has occurred\nTry agan later'.hardcoded,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 18),
+          ));
         }
         if (state is AllCharactersEmpty) {
           return Center(
-              child:
-                  Text('Sorry, there are no characters to display'.hardcoded));
+              child: Text(
+            'Sorry, there are no characters to display'.hardcoded,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 18),
+          ));
         }
         if (state is AllCharactersSuccess) {
           return ListView.separated(
@@ -54,7 +58,7 @@ class CharacterOverviewPage extends StatelessWidget {
                     _onCharacterClicked(context, character);
                   });
             },
-            separatorBuilder: (context, index) => const SizedBox(height: 4),
+            separatorBuilder: (context, index) => const SizedBox(),
             itemCount: state.characters!.length,
           );
         }
