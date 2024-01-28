@@ -65,6 +65,8 @@ class CharacterItemWidget extends StatelessWidget {
           children: [
             Text(
               character.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -76,6 +78,7 @@ class CharacterItemWidget extends StatelessWidget {
                 child: Text(
                   '${character.gender.toCapitalized()} · ${character.origin.toCapitalized()}',
                   maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
