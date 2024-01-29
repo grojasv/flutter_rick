@@ -10,6 +10,7 @@ This is a simple APP about the Rick and Morty characters for iOS and Android, bu
 
 ## Built with 🔨
 - Flutter & Dart
+- State management with Bloc
 - Clean architecture patterns (Data, Domain, and Presentation layers)
 - Retrofit for remote API calls
 - Floor as a local database
