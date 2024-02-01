@@ -7,6 +7,7 @@ import 'package:flutter_rick/features/characters/domain/models/character_model.d
 import 'package:flutter_rick/features/characters/presentation/bloc/favorite/favorite_characters_bloc.dart';
 import 'package:flutter_rick/features/characters/presentation/bloc/favorite/favorite_characters_event.dart';
 import 'package:flutter_rick/features/characters/presentation/bloc/favorite/favorite_characters_state.dart';
+import 'package:flutter_rick/features/characters/presentation/pages/details/character_details_model.dart';
 import 'package:flutter_rick/features/characters/presentation/widgets/character_item_widget.dart';
 
 class FavoritesPage extends StatelessWidget {
@@ -76,6 +77,10 @@ class FavoritesPage extends StatelessWidget {
   void _onBackButtonTapped(BuildContext context) => Navigator.pop(context);
 
   void _onCharacterClicked(BuildContext context, CharacterModel character) {
-    Navigator.pushNamed(context, routeToCharacterDetails, arguments: character);
+    Navigator.pushNamed(context, routeToCharacterDetails,
+        arguments: CharacterDetailsModel(
+          character: character,
+          isPossibleToFavorite: false,
+        ));
   }
 }
