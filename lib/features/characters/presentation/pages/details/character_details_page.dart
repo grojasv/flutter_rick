@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rick/core/injection_container.dart';
 import 'package:flutter_rick/core/utils/string_extensions.dart';
-import 'package:flutter_rick/features/characters/domain/models/character_model.dart';
 import 'package:flutter_rick/features/characters/presentation/bloc/favorite/favorite_characters_bloc.dart';
 import 'package:flutter_rick/features/characters/presentation/bloc/favorite/favorite_characters_event.dart';
+import 'package:flutter_rick/features/characters/presentation/pages/details/character_details_model.dart';
 
 class CharacterDetailsPage extends StatelessWidget {
-  final CharacterModel character;
+  final CharacterDetailsModel characterDetails;
 
   const CharacterDetailsPage({
     super.key,
-    required this.character,
+    required this.characterDetails,
   });
 
   @override
@@ -29,7 +29,7 @@ class CharacterDetailsPage extends StatelessWidget {
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      title: Text(character.name),
+      title: Text(characterDetails.character.name),
       leading: Builder(
         builder: (context) => GestureDetector(
           behavior: HitTestBehavior.opaque,
@@ -61,7 +61,7 @@ class CharacterDetailsPage extends StatelessWidget {
 
   Widget _buildCharacterAvatar(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: character.image,
+      imageUrl: characterDetails.character.image,
       imageBuilder: (context, imageProvider) => CircleAvatar(
         radius: 100,
         backgroundColor: const Color.fromARGB(255, 249, 243, 251),
@@ -87,15 +87,16 @@ class CharacterDetailsPage extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
+              _buildCharacterRow(Icons.numbers,
+                  '${characterDetails.character.id}. ${characterDetails.character.name}'),
+              _buildCharacterRow(Icons.location_pin,
+                  characterDetails.character.origin.toCapitalized()),
               _buildCharacterRow(
-                  Icons.numbers, '${character.id}. ${character.name}'),
-              _buildCharacterRow(
-                  Icons.location_pin, character.origin.toCapitalized()),
-              _buildCharacterRow(Icons.cable, character.species),
-              _buildCharacterRow(
-                  Icons.person, character.gender.toCapitalized()),
-              _buildCharacterRow(
-                  Icons.stacked_bar_chart, character.status.toCapitalized()),
+                  Icons.cable, characterDetails.character.species),
+              _buildCharacterRow(Icons.person,
+                  characterDetails.character.gender.toCapitalized()),
+              _buildCharacterRow(Icons.stacked_bar_chart,
+                  characterDetails.character.status.toCapitalized()),
             ],
           ),
         ),
@@ -104,12 +105,16 @@ class CharacterDetailsPage extends StatelessWidget {
   }
 
   Widget _buildFloatingActionButton() {
-    return Builder(
-      builder: (context) => FloatingActionButton(
-        onPressed: () => _onFloatingActionButtonPressed(context),
-        child: const Icon(Icons.bookmark),
-      ),
-    );
+    if (characterDetails.isPossibleToFavorite) {
+      return Builder(
+        builder: (context) => FloatingActionButton(
+          onPressed: () => _onFloatingActionButtonPressed(context),
+          child: const Icon(Icons.bookmark),
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 
   Widget _buildCharacterRow(IconData icon, String text) {
@@ -132,12 +137,13 @@ class CharacterDetailsPage extends StatelessWidget {
 
   void _onFloatingActionButtonPressed(BuildContext context) {
     BlocProvider.of<FavoriteCharactersBloc>(context)
-        .add(SaveFavorite(character));
+        .add(SaveFavorite(characterDetails.character));
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.black,
-        content: Text('${character.name} added to favorites'.hardcoded),
+        content: Text(
+            '${characterDetails.character.name} added to favorites'.hardcoded),
       ),
     );
   }

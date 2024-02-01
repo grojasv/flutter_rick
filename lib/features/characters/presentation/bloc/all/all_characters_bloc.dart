@@ -18,7 +18,7 @@ class AllCharactersBloc extends Bloc<AllCharactersEvent, AllCharactersState> {
 
     if (dataState is DataSuccess) {
       if (dataState.data!.isEmpty) {
-        emit(AllCharactersEmpty());
+        emit(const AllCharactersEmpty());
       } else {
         emit(AllCharactersSuccess(dataState.data!));
       }
